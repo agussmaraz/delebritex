@@ -17,9 +17,12 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => {
     res.send('hola agus');
 });
-const { Producto } = require('./sequelize');
 app.use(require('./routes/productos'));
 app.use(require('./routes/medidas'));
+app.use(require('./routes/empaques'));
+app.use(require('./routes/categorias'));
+
+
 
 // Middleware para Vue.js router modo history
 const history = require('connect-history-api-fallback');

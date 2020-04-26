@@ -14,6 +14,15 @@ module.exports = (sequelize, type) => {
             empaque: {
                 type: type.STRING,
             },
+            pesoUnidad: {
+                type: type.STRING,
+            },
+            unidadPorEmpaque: {
+                type: type.STRING,
+            },
+            categoria: {
+                type: type.STRING,
+            }
         },
         {
             timestamps: true,
