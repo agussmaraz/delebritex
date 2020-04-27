@@ -1,4 +1,4 @@
-import { Producto } from '../sequelize';
+import { Producto, Categoria, Empaque , Medida} from '../sequelize';
 
 export const crear = async (req, res) => {
     const body = req.body;
@@ -15,7 +15,7 @@ export const crear = async (req, res) => {
 };
 export const buscar = async (req, res) => {
     try {
-        const productodb = await Producto.findAll();
+        const productodb = await Producto.findAll({include: [{ model: Categoria, as: 'categoria' }, {model: Empaque, as:'empaque'}, {model: Medida, as:'medida'}]});
         res.json(productodb);
     } catch (error) {
         console.log(error);
@@ -28,9 +28,10 @@ export const buscar = async (req, res) => {
 export const buscarSegunId = async (req, res) => {
     const id = req.params.id;
     try {
-        const productodb = await Producto.findOne({ where: { id: id } });
+        const productodb = await Producto.findOne({ where: { id: id }, include: [{ model: Categoria, as: 'categoria' }, {model: Empaque, as:'empaque'}, {model: Medida, as:'medida'}], });
         res.json(productodb);
     } catch (error) {
+        console.log(error);
         return res.status(400).json({
             mensaje: 'Hubo un problema',
             error,
@@ -47,7 +48,7 @@ export const editar = async (req, res) => {
             });
         });
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).json({
             mensaje: 'Hubo un error',
             error,

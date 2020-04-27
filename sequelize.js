@@ -13,6 +13,13 @@ const Categoria = CategoriaModel(sequelize, Sequelize);
 
 sequelize.sync().then(() => {
     console.log('Tabla creada')
+
+    Producto.belongsTo(Categoria, { foreignKey: 'categoriaId', as: 'categoria' });
+    Producto.belongsTo(Empaque, { foreignKey: 'empaqueId', as: 'empaque' });
+    Producto.belongsTo(Medida, { foreignKey: 'medidaId', as: 'medida' });
+
+
+
 })
 
 

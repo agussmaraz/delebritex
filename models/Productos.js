@@ -2,16 +2,22 @@ module.exports = (sequelize, type) => {
     const Productos = sequelize.define(
         'Productos',
         {
+            id: {
+                allowNull: false,
+                autoIncrement: true,
+                primaryKey: true,
+                type: type.INTEGER,
+            },
             nombre: {
                 type: type.STRING,
             },
             totalUnidad: {
                 type: type.STRING,
             },
-            medida: {
+            medidaId: {
                 type: type.STRING,
             },
-            empaque: {
+            empaqueId: {
                 type: type.STRING,
             },
             pesoUnidad: {
@@ -20,13 +26,15 @@ module.exports = (sequelize, type) => {
             unidadPorEmpaque: {
                 type: type.STRING,
             },
-            categoria: {
-                type: type.STRING,
-            }
+            categoriaId: {
+                type: type.INTEGER,
+            },
         },
         {
             timestamps: true,
-            tableName: "productos"
-        })
-        return Productos
+            tableName: 'Productos',
+        }
+    );
+
+    return Productos;
 };
