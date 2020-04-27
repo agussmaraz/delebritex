@@ -17,7 +17,7 @@ export const crear = async(req, res) => {
 
 export const buscar = async(req, res) => {
     try{
-        const medidadb = await Medida.find();
+        const medidadb = await Medida.findAll();
         res.json(medidadb);
     }
     catch(error) {
