@@ -1,10 +1,12 @@
-import { Producto, Categoria, Empaque , Medida} from '../sequelize';
+import { Producto, Categoria, Empaque, Medida } from '../sequelize';
+import * as producto from '../services/producto.services';
+import * as movimiento from '../services/movimiento.service';
 
 export const crear = async (req, res) => {
     const body = req.body;
     console.log(body);
     try {
-        const productodb = await Producto.create(body);
+        const productodb = await producto.crear(body);
         res.status(200).json(productodb);
     } catch (error) {
         console.log(error);
@@ -15,7 +17,13 @@ export const crear = async (req, res) => {
 };
 export const buscar = async (req, res) => {
     try {
-        const productodb = await Producto.findAll({include: [{ model: Categoria, as: 'categoria' }, {model: Empaque, as:'empaque'}, {model: Medida, as:'medida'}]});
+        const productodb = await Producto.findAll({
+            include: [
+                { model: Categoria, as: 'categoria' },
+                { model: Empaque, as: 'empaque' },
+                { model: Medida, as: 'medida' },
+            ],
+        });
         res.json(productodb);
     } catch (error) {
         console.log(error);
@@ -28,7 +36,14 @@ export const buscar = async (req, res) => {
 export const buscarSegunId = async (req, res) => {
     const id = req.params.id;
     try {
-        const productodb = await Producto.findOne({ where: { id: id }, include: [{ model: Categoria, as: 'categoria' }, {model: Empaque, as:'empaque'}, {model: Medida, as:'medida'}], });
+        const productodb = await Producto.findOne({
+            where: { id: id },
+            include: [
+                { model: Categoria, as: 'categoria' },
+                { model: Empaque, as: 'empaque' },
+                { model: Medida, as: 'medida' },
+            ],
+        });
         res.json(productodb);
     } catch (error) {
         console.log(error);
@@ -62,16 +77,15 @@ export const eliminar = async (req, res) => {
     try {
         const productodb = await Producto.destroy({ where: { id: id } });
         if (!productodb) {
-            res.status(400).json({
-                mensaje: 'No se encontro el producto con ese id',
-                error,
+            res.status(500).json({
+                mensaje: 'El producto no se encuentra',
             });
         }
         res.json(productodb);
     } catch (error) {
-        console.log(error);
         return res.status(400).json({
-            mensaje: 'Hubo un problema para eliminar el producto',
+            mensaje: 'Ocurrio un error',
+            error,
         });
     }
 };
@@ -83,3 +97,4 @@ export default {
     editar,
     eliminar,
 };
+

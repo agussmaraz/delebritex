@@ -29,9 +29,6 @@ module.exports = (sequelize, type) => {
             categoriaId: {
                 type: type.INTEGER,
             },
-            cantidadPaquetes: {
-                type: type.STRING
-        }
         },
         {
             timestamps: true,

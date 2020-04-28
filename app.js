@@ -21,6 +21,7 @@ app.use(require('./routes/productos'));
 app.use(require('./routes/medidas'));
 app.use(require('./routes/empaques'));
 app.use(require('./routes/categorias'));
+app.use(require('./routes/movimientos'));
 
 
 
