@@ -57,8 +57,21 @@ export const editar = async (req, res) => {
     const nuevosDatos = req.body;
     const id = req.params.id;
     try {
+        const producto = await Producto.findOne({ where: { id: id } });
+        const totalUnidadAntes = producto.totalUnidad;
+        // console.log(totalUnidadAntes);
+
         const productodb = await Producto.findOne({ where: { id: id } }).then((producto) => {
             producto.update(nuevosDatos).then((nuevosDatos) => {
+                const totalUnidadAhora = nuevosDatos.totalUnidad;
+                if (totalUnidadAntes !== totalUnidadAhora) {
+                    const diferencia = totalUnidadAhora - totalUnidadAntes;
+                    if (diferencia == 1) {
+                        movimiento.crear(nuevosDatos.id, 'suma', diferencia, nuevosDatos.updatedAt);
+                    } else {
+                        movimiento.crear(nuevosDatos.id, 'resta', Math.abs(diferencia), nuevosDatos.updatedAt);
+                    }
+                }
                 res.json(nuevosDatos);
             });
         });
@@ -97,4 +110,3 @@ export default {
     editar,
     eliminar,
 };
-

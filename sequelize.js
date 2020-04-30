@@ -4,6 +4,7 @@ const MedidaModel = require('./models/Medidas');
 const EmpaqueModel = require('./models/Empaque');
 const CategoriaModel = require('./models/Categorias');
 const MovimientoModel = require('./models/Movimientos');
+const UsuarioModel = require('./models/Usuario');
 
 const DBURL = 'mysql://root:root@localhost:8889/delebritex'
 const sequelize = new Sequelize(DBURL)
@@ -12,6 +13,8 @@ const Medida = MedidaModel(sequelize, Sequelize);
 const Empaque = EmpaqueModel(sequelize, Sequelize);
 const Categoria = CategoriaModel(sequelize, Sequelize);
 const Movimiento = MovimientoModel(sequelize, Sequelize);
+const Usuario = UsuarioModel(sequelize, Sequelize);
+
 
 sequelize.sync().then(() => {
     console.log('Tabla creada')
@@ -28,5 +31,5 @@ sequelize.sync().then(() => {
 
 
 module.exports = {
-    Producto, Medida, Empaque, Categoria, Movimiento
+    Producto, Medida, Empaque, Categoria, Movimiento, Usuario
 }
