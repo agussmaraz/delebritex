@@ -8,5 +8,6 @@ router.post('/login', UsuarioController.login);
 router.get('/usuario/:id', UsuarioController.buscarSegunId);
 router.put('/usuario/:id', UsuarioController.editar);
 router.delete('/usuario/:id', UsuarioController.eliminar);
+router.delete('/usuarioToken/:id', UsuarioController.eliminarToken);
 
 module.exports = router;

@@ -17,6 +17,13 @@ module.exports = (sequelize, type) => {
         },
         contraseña: {
             type: type.STRING
+        },
+        estado: {
+            type: type.INTEGER,
+            defaultValue: 1
+        }, 
+        token: {
+            type: type.STRING
         }
     })
     return Usuarios;
