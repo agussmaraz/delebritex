@@ -56,8 +56,8 @@ export const login = async (req, res) => {
         const usuariodb = await Usuario.findOne({ where: { email: req.body.email } });
         if (bcrypt.compareSync(req.body.contraseña, usuariodb.contraseña)) {
             const token = uuid();
-            usuariodb.update({ token: token })
-            res.json(usuariodb)
+            usuariodb.update({ token: token });
+            res.json(usuariodb);
         } else {
             res.send('El usuario no existe');
         }
@@ -65,11 +65,20 @@ export const login = async (req, res) => {
         console.log(error);
     }
 };
-
+export const buscarSegunToken = async (req, res) => {
+    const token = req.params.token;
+    try {
+        const usuariodb = await Usuario.findOne({ where: { token: token }, attributes: { exclude: ['contraseña'] } });
+        res.json(usuariodb);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ mensaje: 'Hubo un problema' });
+    }
+};
 export const buscarSegunId = async (req, res) => {
     const id = req.params.id;
     try {
-        const usuariodb = await Usuario.findOne({ where: { id: id } });
+        const usuariodb = await Usuario.findOne({ where: { id: id }, attributes: { exclude: ['contraseña'] } });
         res.json(usuariodb);
     } catch (error) {
         console.log(error);
@@ -122,6 +131,7 @@ export const eliminarToken = async (req, res) => {
 
 export default {
     crear,
+    buscarSegunToken,
     buscarSegunId,
     login,
     eliminar,
