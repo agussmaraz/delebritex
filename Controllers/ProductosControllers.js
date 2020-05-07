@@ -8,6 +8,7 @@ export const crear = async (req, res) => {
     const body = req.body;
     const slug = req.body.slug;
     console.log(slug);
+    
     try {
         const productodb = await producto.crear(body);
         res.status(200).json(productodb);
