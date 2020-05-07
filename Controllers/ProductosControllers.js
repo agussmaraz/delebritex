@@ -4,11 +4,10 @@ import * as movimiento from '../services/movimiento.service';
 const Slug = require('slug');
 
 
-
-
 export const crear = async (req, res) => {
     const body = req.body;
-    const slug = req.body.slug;
+    const slug = Slug(req.body.slug);
+    req.body.slug = slug;
     console.log(slug);
     try {
         const productodb = await producto.crear(body);
