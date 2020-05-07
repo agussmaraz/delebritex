@@ -29,6 +29,12 @@ module.exports = (sequelize, type) => {
             categoriaId: {
                 type: type.INTEGER,
             },
+            slug: {
+                type: type.STRING,
+            },
+            imagen: {
+                type: type.STRING,
+            },
         },
         {
             timestamps: true,
