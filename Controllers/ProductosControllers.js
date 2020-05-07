@@ -1,10 +1,13 @@
 import { Producto, Categoria, Empaque, Medida } from '../sequelize';
 import * as producto from '../services/producto.services';
 import * as movimiento from '../services/movimiento.service';
+const Slug = require('slug');
+
 
 export const crear = async (req, res) => {
     const body = req.body;
-    console.log(body);
+    const slug = req.body.slug;
+    console.log(slug);
     try {
         const productodb = await producto.crear(body);
         res.status(200).json(productodb);
