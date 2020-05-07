@@ -4,6 +4,8 @@ import * as movimiento from '../services/movimiento.service';
 const Slug = require('slug');
 
 
+
+
 export const crear = async (req, res) => {
     const body = req.body;
     const slug = req.body.slug;
@@ -37,10 +39,11 @@ export const buscar = async (req, res) => {
     }
 };
 export const buscarSegunId = async (req, res) => {
-    const id = req.params.id;
+    const slug = req.params.slug;
+    console.log(slug);
     try {
         const productodb = await Producto.findOne({
-            where: { id: id },
+            where: { slug: slug },
             include: [
                 { model: Categoria, as: 'categoria' },
                 { model: Empaque, as: 'empaque' },
@@ -58,32 +61,31 @@ export const buscarSegunId = async (req, res) => {
 };
 export const editar = async (req, res) => {
     const nuevosDatos = req.body;
+    console.log(nuevosDatos);
     const id = req.params.id;
     try {
-        const producto = await Producto.findOne({ where: { id: id } });
-        const totalUnidadAntes = producto.totalUnidad;
-        // console.log(totalUnidadAntes);
+        const producto = await Producto.findOne({where: {id:id}})
+        const unidadAntes = producto.totalUnidad;
+        console.log('unidades de antes: ' + unidadAntes);
 
-        const productodb = await Producto.findOne({ where: { id: id } }).then((producto) => {
-            producto.update(nuevosDatos).then((nuevosDatos) => {
-                const totalUnidadAhora = nuevosDatos.totalUnidad;
-                if (totalUnidadAntes !== totalUnidadAhora) {
-                    const diferencia = totalUnidadAhora - totalUnidadAntes;
-                    if (diferencia == 1) {
-                        movimiento.crear(nuevosDatos.id, 'suma', diferencia, nuevosDatos.updatedAt);
-                    } else {
-                        movimiento.crear(nuevosDatos.id, 'resta', Math.abs(diferencia), nuevosDatos.updatedAt);
-                    }
-                }
-                res.json(nuevosDatos);
-            });
-        });
-    } catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            mensaje: 'Hubo un error',
-            error,
-        });
+        const productodb = await Producto.findOne({where: {id:id}})
+        productodb.update(nuevosDatos)
+
+        const unidadAhora = productodb.totalUnidad;
+        console.log('unidades de ahora: ' + unidadAhora);
+
+        if(unidadAntes !== unidadAhora){
+            const diferencia = unidadAhora - unidadAntes;
+            if(diferencia === 1){
+                 movimiento.crear(productodb.id, 'suma', diferencia, productodb.updatedAt);
+            } else {
+                 movimiento.crear(productodb.id, 'resta', Math.abs(diferencia), productodb.updatedAt);
+            }
+        }
+        res.json(productodb);
+
+    }catch(error){
+        console.log(error)
     }
 };
 

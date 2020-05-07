@@ -31,7 +31,10 @@ module.exports = (sequelize, type) => {
             },
             slug: {
                 type: type.STRING,
-            }
+            },
+            imagen: {
+                type: type.STRING,
+            },
         },
         {
             timestamps: true,
