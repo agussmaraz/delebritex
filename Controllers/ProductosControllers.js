@@ -1,15 +1,13 @@
-import { Producto, Categoria, Empaque, Medida } from '../sequelize';
+import { Producto, Categoria, Empaque, Medida, Movimiento} from '../sequelize';
 import * as producto from '../services/producto.services';
 import * as movimiento from '../services/movimiento.service';
 const Slug = require('slug');
 
 
-export const crear = async (req, res) => {
+export const crear =  async (req, res) => {
     const body = req.body;
     const slug = Slug(req.body.slug);
     req.body.slug = slug;
-    console.log(slug);
-    
     try {
         const productodb = await producto.crear(body);
         res.status(200).json(productodb);
@@ -38,7 +36,7 @@ export const buscar = async (req, res) => {
         });
     }
 };
-export const buscarSegunId = async (req, res) => {
+export const buscarSegunSlug = async (req, res) => {
     const slug = req.params.slug;
     console.log(slug);
     try {
@@ -59,20 +57,40 @@ export const buscarSegunId = async (req, res) => {
         });
     }
 };
+export const buscarSegunId = async (req, res) => {
+    const id = req.params.id;
+    console.log(id);
+    try {
+        const productodb = await Producto.findOne({
+            where: { id: id },
+            include: [
+                { model: Categoria, as: 'categoria' },
+                { model: Empaque, as: 'empaque' },
+                { model: Medida, as: 'medida' },
+            ],
+        });
+        res.json(productodb);
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+            mensaje: 'Hubo un problema',
+            error,
+        });
+    }
+};
 export const editar = async (req, res) => {
     const nuevosDatos = req.body;
-    console.log(nuevosDatos);
+    // console.log(nuevosDatos);
     const id = req.params.id;
+    console.log(id);
     try {
         const producto = await Producto.findOne({where: {id:id}})
         const unidadAntes = producto.totalUnidad;
-        console.log('unidades de antes: ' + unidadAntes);
 
         const productodb = await Producto.findOne({where: {id:id}})
         productodb.update(nuevosDatos)
 
         const unidadAhora = productodb.totalUnidad;
-        console.log('unidades de ahora: ' + unidadAhora);
 
         if(unidadAntes !== unidadAhora){
             const diferencia = unidadAhora - unidadAntes;
@@ -93,13 +111,14 @@ export const eliminar = async (req, res) => {
     const id = req.params.id;
     console.log(id);
     try {
-        const productodb = await Producto.destroy({ where: { id: id } });
+        const productodb = await Producto.destroy({ where: { id: id}} );
+        movimiento.eliminar(id);
         if (!productodb) {
             res.status(500).json({
                 mensaje: 'El producto no se encuentra',
             });
         }
-        res.json(productodb);
+        res.json(id);
     } catch (error) {
         return res.status(400).json({
             mensaje: 'Ocurrio un error',
@@ -111,6 +130,7 @@ export const eliminar = async (req, res) => {
 export default {
     crear,
     buscar,
+    buscarSegunSlug,
     buscarSegunId,
     editar,
     eliminar,

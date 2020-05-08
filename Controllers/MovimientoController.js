@@ -27,6 +27,7 @@ export const buscarSegunId = async(req, res) => {
     }
 }
 
+
 export default {
     buscarMovimientos,
     buscarSegunId

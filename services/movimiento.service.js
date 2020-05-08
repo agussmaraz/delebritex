@@ -15,3 +15,9 @@ export const buscar = async(producto) => {
     let movimiento = await Movimiento.find({producto: producto});
     return movimiento;
 }
+
+export const eliminar = async(id) => {
+    console.log('este es el id del producto por eliminar:' + id)
+    let eliminarMovimiento = await Movimiento.destroy({where: {productoId: id}})
+    return eliminarMovimiento
+}
