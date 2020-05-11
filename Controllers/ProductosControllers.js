@@ -6,6 +6,8 @@ const Slug = require('slug');
 
 export const crear =  async (req, res) => {
     const body = req.body;
+    const pathOriginal = req.file.originalname;
+    req.body.imagen = pathOriginal;
     const slug = Slug(req.body.slug);
     req.body.slug = slug;
     try {
@@ -38,7 +40,7 @@ export const buscar = async (req, res) => {
 };
 export const buscarSegunSlug = async (req, res) => {
     const slug = req.params.slug;
-    console.log(slug);
+    // console.log(slug);
     try {
         const productodb = await Producto.findOne({
             where: { slug: slug },

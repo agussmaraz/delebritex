@@ -2,8 +2,17 @@ const express = require('express');
 const router = express.Router();
 import ProductosController from '../controllers/ProductosControllers';
 const multer = require('multer');
-const upload = multer({dest: 'uploads/'})
 
+const storage= multer.diskStorage({
+    destination: '/Users/agustinamaraz/Desktop/delebritex-front/public/img',
+    filename: function (req, file, cb) {
+        const path = file.originalname;
+        cb(null, path)
+    }
+})
+const upload = multer({ storage: storage })
+
+// const upload = multer({dest: 'uploads/'});
 
 router.post('/nuevoProducto', upload.single('imagen'), ProductosController.crear);
 router.get('/producto/:id', ProductosController.buscarSegunId);
