@@ -4,7 +4,7 @@ import ProductosController from '../controllers/ProductosControllers';
 const multer = require('multer');
 
 const storage= multer.diskStorage({
-    destination: '/Users/agustinamaraz/Desktop/delebritex-front/public/img',
+    destination: '/Users/agustinamaraz/Desktop/delebritex-front/src/img',
     filename: function (req, file, cb) {
         const path = file.originalname;
         cb(null, path)
