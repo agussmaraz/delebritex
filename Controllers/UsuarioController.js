@@ -18,12 +18,8 @@ export const crear = async (req, res) => {
             created: today,
             token: token,
         };
-
-        // console.log(userData);
-
         var BCRYPT_SALT_ROUNDS = 12;
         const userdb = await Usuario.findOne({ where: { email: req.body.email } });
-        // console.log(userdb);
         if (!userdb) {
             try {
                 bcrypt.hash(usuariodb.contraseña, BCRYPT_SALT_ROUNDS, async (err, hash) => {
@@ -42,7 +38,7 @@ export const crear = async (req, res) => {
             }
         } else {
             res.status(500).json({
-                mensaje: 'El usuario ya se encuentra registrado',
+                mensaje: 'Ya se encuentra un usuario registrado con ese email',
             });
         }
     } catch (error) {
@@ -53,16 +49,25 @@ export const crear = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        const usuariodb = await Usuario.findOne({ where: { email: req.body.email } });
-        if (bcrypt.compareSync(req.body.contraseña, usuariodb.contraseña)) {
-            const token = uuid();
-            usuariodb.update({ token: token });
-            res.json(usuariodb);
-        } else {
-            res.send('El usuario no existe');
+        const usuario = {
+            email: req.body.email,
+            contraseña: req.body.contraseña
         }
+        const usuariodb = await Usuario.findOne({ where: { email: usuario.email } });
+        if (bcrypt.compareSync(usuario.contraseña, usuariodb.contraseña)) {
+            try {
+                const token = uuid();
+                usuariodb.update({ token: token });
+            } catch (e) {
+                res.status(409).json({ mensaje: 'Hubo un problema al iniciar sesionNN' });
+            }
+        } else {
+            res.status(500).json({mensaje: 'La contraseña es invalida'})
+        }
+        res.json(usuariodb);
     } catch (error) {
         console.log(error);
+        res.status(409).json({ mensaje: 'No existe una cuenta con ese email' });
     }
 };
 export const buscarSegunToken = async (req, res) => {

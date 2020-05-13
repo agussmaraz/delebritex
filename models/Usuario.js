@@ -4,27 +4,31 @@ module.exports = (sequelize, type) => {
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
-            type: type.INTEGER
+            type: type.INTEGER,
         },
         nombre: {
-            type: type.STRING
+            type: type.STRING,
+            required: true,
         },
         apellido: {
-            type: type.STRING
+            type: type.STRING,
+            required: true,
         },
         email: {
-            type: type.STRING
+            type: type.STRING,
+            required: true,
         },
         contraseña: {
-            type: type.STRING
+            type: type.STRING,
+            required: true,
         },
         estado: {
             type: type.INTEGER,
-            defaultValue: 1
-        }, 
+            defaultValue: 1,
+        },
         token: {
-            type: type.STRING
-        }
-    })
+            type: type.STRING,
+        },
+    });
     return Usuarios;
-}
+};
