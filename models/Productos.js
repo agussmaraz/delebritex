@@ -35,6 +35,9 @@ module.exports = (sequelize, type) => {
             imagen: {
                 type: type.STRING,
             },
+            precio: {
+                type: type.INTEGER
+            }
         },
         {
             timestamps: true,

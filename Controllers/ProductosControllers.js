@@ -7,7 +7,7 @@ const Slug = require('slug');
 export const crear =  async (req, res) => {
     const body = req.body;
     const pathOriginal = req.file.originalname;
-    req.body.imagen = pathOriginal;
+    req.body.imagen = 'img/' + pathOriginal;
     const slug = Slug(req.body.slug);
     req.body.slug = slug;
     try {
