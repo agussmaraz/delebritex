@@ -7,7 +7,7 @@ const Slug = require('slug');
 export const crear =  async (req, res) => {
     const body = req.body;
     const pathOriginal = req.file.originalname;
-    req.body.imagen = 'img/' + pathOriginal;
+    req.body.imagen = '/img/' + pathOriginal;
     const slug = Slug(req.body.slug);
     req.body.slug = slug;
     try {
@@ -82,7 +82,7 @@ export const buscarSegunId = async (req, res) => {
 };
 export const editar = async (req, res) => {
     const nuevosDatos = req.body;
-    // console.log(nuevosDatos);
+    console.log(nuevosDatos);
     const id = req.params.id;
     console.log(id);
     try {

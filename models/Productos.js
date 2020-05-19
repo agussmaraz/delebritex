@@ -35,8 +35,21 @@ module.exports = (sequelize, type) => {
             imagen: {
                 type: type.STRING,
             },
-            precio: {
+            precioUnidad: {
                 type: type.INTEGER
+            },
+            precioBulto: {
+                type: type.INTEGER
+            },
+            precioDistribuidoraBulto: {
+                type: type.INTEGER
+            },
+            precioDistribuidoraUnidad: {
+                type: type.INTEGER
+            },
+            estado: {
+                type: type.INTEGER,
+                defaultValue: 0,
             }
         },
         {
