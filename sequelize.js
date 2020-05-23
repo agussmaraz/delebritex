@@ -5,6 +5,7 @@ const EmpaqueModel = require('./models/Empaque');
 const CategoriaModel = require('./models/Categorias');
 const MovimientoModel = require('./models/Movimientos');
 const UsuarioModel = require('./models/Usuario');
+const CarritoModel = require('./models/Carrito');
 
 const DBURL = 'mysql://root:root@localhost:8889/delebritex'
 const sequelize = new Sequelize(DBURL)
@@ -14,7 +15,7 @@ const Empaque = EmpaqueModel(sequelize, Sequelize);
 const Categoria = CategoriaModel(sequelize, Sequelize);
 const Movimiento = MovimientoModel(sequelize, Sequelize);
 const Usuario = UsuarioModel(sequelize, Sequelize);
-
+const Carrito = CarritoModel(sequelize, Sequelize);
 
 sequelize.sync().then(() => {
     console.log('Tabla creada')
@@ -23,7 +24,7 @@ sequelize.sync().then(() => {
     Producto.belongsTo(Empaque, { foreignKey: 'empaqueId', as: 'empaque' });
     Producto.belongsTo(Medida, { foreignKey: 'medidaId', as: 'medida' });
     Movimiento.belongsTo(Producto, {foreignKey:'productoId', as: 'producto'});
-
+    Carrito.belongsTo(Usuario, {foreignKey:'usuarioId', as: 'usuario'})
 
 
 })
@@ -31,5 +32,5 @@ sequelize.sync().then(() => {
 
 
 module.exports = {
-    Producto, Medida, Empaque, Categoria, Movimiento, Usuario
+    Producto, Medida, Empaque, Categoria, Movimiento, Usuario, Carrito
 }

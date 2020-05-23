@@ -29,6 +29,7 @@ module.exports = (sequelize, type) => {
         token: {
             type: type.STRING,
         },
+       
     });
     return Usuarios;
 };

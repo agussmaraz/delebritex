@@ -18,15 +18,20 @@ export const crear = async (req, res) => {
             created: today,
             token: token,
         };
+
         var BCRYPT_SALT_ROUNDS = 12;
-        const userdb = await Usuario.findOne({ where: { email: req.body.email } });
+        const userdb = await Usuario.findOne({ where: { email: usuariodb.email } });
         if (!userdb) {
             try {
                 bcrypt.hash(usuariodb.contraseña, BCRYPT_SALT_ROUNDS, async (err, hash) => {
                     try {
                         usuariodb.contraseña = hash;
-                        let nuevo_user = await Usuario.create(usuariodb);
-                        res.status(200).json(nuevo_user);
+                        if (!usuariodb.nombre || !usuariodb.apellido || !usuariodb.email) {
+                            res.status(500).json({ mensaje: 'Por favor, complete los campos' });
+                        } else {
+                            let nuevo_user = await Usuario.create(usuariodb);
+                            res.status(200).json(nuevo_user);
+                        }
                     } catch (error) {
                         console.log(error);
                         res.status(409).json({ mensaje: 'Hubo un problema al registrarse' });
@@ -51,23 +56,23 @@ export const login = async (req, res) => {
     try {
         const usuario = {
             email: req.body.email,
-            contraseña: req.body.contraseña
-        }
+            contraseña: req.body.contraseña,
+        };
         const usuariodb = await Usuario.findOne({ where: { email: usuario.email } });
         if (bcrypt.compareSync(usuario.contraseña, usuariodb.contraseña)) {
             try {
                 const token = uuid();
                 usuariodb.update({ token: token });
             } catch (e) {
-                res.status(409).json({ mensaje: 'Hubo un problema al iniciar sesionNN' });
+                res.status(409).json({ mensaje: 'Hubo un problema al iniciar sesion' });
             }
         } else {
-            res.status(500).json({mensaje: 'La contraseña es invalida'})
+            res.status(500).json({ mensaje: 'La contraseña es invalida' });
         }
         res.json(usuariodb);
     } catch (error) {
         console.log(error);
-        res.status(409).json({ mensaje: 'No existe una cuenta con ese email' });
+        res.status(409).json({ mensaje: 'No esta registrada una cuenta con ese email' });
     }
 };
 export const buscarSegunToken = async (req, res) => {

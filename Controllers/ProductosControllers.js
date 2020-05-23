@@ -6,6 +6,7 @@ const Slug = require('slug');
 
 export const crear =  async (req, res) => {
     const body = req.body;
+    console.log(body);
     const pathOriginal = req.file.originalname;
     req.body.imagen = '/img/' + pathOriginal;
     const slug = Slug(req.body.slug);
@@ -99,7 +100,7 @@ export const editar = async (req, res) => {
             if(diferencia === 1){
                  movimiento.crear(productodb.id, 'suma', diferencia, productodb.updatedAt);
             } else {
-                 movimiento.crear(productodb.id, 'resta', Math.abs(diferencia), productodb.updatedAt);
+                 movimiento.crear(productodb.id, 'vendido', Math.abs(diferencia), productodb.updatedAt);
             }
         }
         res.json(productodb);

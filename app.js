@@ -24,6 +24,8 @@ app.use(require('./routes/empaques'));
 app.use(require('./routes/categorias'));
 app.use(require('./routes/movimientos'));
 app.use(require('./routes/usuarios'));
+app.use(require('./routes/carrito'));
+
 
 
 // Middleware para Vue.js router modo history
