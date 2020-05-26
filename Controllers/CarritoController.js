@@ -51,8 +51,20 @@ export const buscar = async (req, res) => {
     }
 };
 
+export const numeroCompra = async (req, res) => {
+    const numero = req.params.numeroCompra;
+    try {
+        const carritodb = await Carrito.findAll({ where: { numeroCompra: numero }, include: [{ model: Usuario, as: 'usuario' }] });
+        return res.status(200).json(carritodb);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ mensaje: 'Hubo un error' });
+    }
+};
+
 export default {
     crear,
     buscarSegunId,
     buscar,
+    numeroCompra
 };
