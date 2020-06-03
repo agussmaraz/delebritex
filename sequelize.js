@@ -23,7 +23,7 @@ sequelize.sync().then(() => {
     Producto.belongsTo(Categoria, { foreignKey: 'categoriaId', as: 'categoria' });
     Producto.belongsTo(Empaque, { foreignKey: 'empaqueId', as: 'empaque' });
     Producto.belongsTo(Medida, { foreignKey: 'medidaId', as: 'medida' });
-    Movimiento.belongsTo(Producto, {foreignKey:'productoId', as: 'producto'});
+    // Movimiento.belongsTo(Producto, {foreignKey:'productos', as: 'producto'});
     Carrito.belongsTo(Usuario, {foreignKey:'usuarioId', as: 'usuario'})
 
 

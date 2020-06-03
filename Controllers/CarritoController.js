@@ -1,8 +1,9 @@
 import { Carrito, Usuario } from '../sequelize';
 
 export const crear = async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     const numero = Math.round(Math.random() * 1000);
+    console.log(req.body)
     const body = req.body.map((producto) => {
         const producto_nuevo = {
             producto: producto.nombre,
@@ -15,7 +16,6 @@ export const crear = async (req, res) => {
         };
         return producto_nuevo;
     });
-    // console.log(body);
     try {
         const carrito = [];
         for (let i = 0; i < body.length; i++) {
@@ -62,9 +62,45 @@ export const numeroCompra = async (req, res) => {
     }
 };
 
+export const editar = async (req, res) => {
+    const body = req.body;
+    console.log(body);
+    const numeroCompra = req.params.numero;
+    console.log(numeroCompra);
+    try {
+        const carritodb = await Carrito.findAll({ where: { numeroCompra: numeroCompra } });
+        carritodb.forEach((element) => {
+            element.update(body);
+            console.log(element);
+        });
+        return res.json(carritodb);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ mensaje: 'El carrito no se pudo editar' });
+    }
+};
+
+export const eliminar = async (req, res) => {
+    const numero = req.params.numero;
+    try {
+        const carritodb = await Carrito.destroy({ where: { numeroCompra: numero } });
+        if (!carritodb) {
+            res.status(500).json({
+                mensaje: 'El producto no se encuentra',
+            });
+        }
+        res.json(numero);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ mensaje: 'No se pudo eliminar el carrito' });
+    }
+};
+
 export default {
     crear,
     buscarSegunId,
     buscar,
-    numeroCompra
+    numeroCompra,
+    editar,
+    eliminar,
 };

@@ -1,12 +1,12 @@
 import {Movimiento} from '../sequelize';
 import Producto from '../models/Productos';
 
-export const crear = async(producto, accion, valor, fecha) => {
+export const crear = async(producto, accion, valor, numeroCompra) => {
     let nuevo_movimiento = await Movimiento.create({
         productoId: producto,
         accion: accion,
         valor: valor,
-        fecha: fecha
+        numeroCompra: numeroCompra
     });
     return nuevo_movimiento;
 }

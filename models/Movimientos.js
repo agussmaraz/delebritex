@@ -6,7 +6,19 @@ module.exports = (sequelize, type) => {
             primaryKey: true,
             type: type.INTEGER
         },
-        productoId: {
+        productos: {
+            type: type.STRING
+        },
+        numeroCompra: {
+            type: type.INTEGER
+        },
+        precioUnidad: {
+            type: type.INTEGER
+        },
+        precioTotal: {
+            type: type.INTEGER
+        },
+        usuario: {
             type: type.STRING
         },
         accion: {

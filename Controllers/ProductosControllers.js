@@ -83,9 +83,7 @@ export const buscarSegunId = async (req, res) => {
 };
 export const editar = async (req, res) => {
     const nuevosDatos = req.body;
-    console.log(nuevosDatos);
     const id = req.params.id;
-    console.log(id);
     try {
         const producto = await Producto.findOne({where: {id:id}})
         const unidadAntes = producto.totalUnidad;
