@@ -12,6 +12,9 @@ module.exports = (sequelize, type) => {
         numeroCompra: {
             type: type.INTEGER
         },
+        precioBulto: {
+            type: type.INTEGER
+        },
         precioUnidad: {
             type: type.INTEGER
         },
@@ -24,7 +27,10 @@ module.exports = (sequelize, type) => {
         accion: {
             type: type.STRING
         },
-        valor: {
+        empaques: {
+            type: type.INTEGER
+        },
+        unidades: {
             type: type.INTEGER
         },
         fecha: {

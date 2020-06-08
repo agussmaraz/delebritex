@@ -62,7 +62,6 @@ export const buscarSegunSlug = async (req, res) => {
 };
 export const buscarSegunId = async (req, res) => {
     const id = req.params.id;
-    console.log(id);
     try {
         const productodb = await Producto.findOne({
             where: { id: id },
@@ -110,7 +109,6 @@ export const editar = async (req, res) => {
 
 export const eliminar = async (req, res) => {
     const id = req.params.id;
-    console.log(id);
     try {
         const productodb = await Producto.destroy({ where: { id: id}} );
         movimiento.eliminar(id);

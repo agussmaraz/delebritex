@@ -130,7 +130,6 @@ export const eliminar = async (req, res) => {
 export const eliminarToken = async (req, res) => {
     const body = req.body;
     const tokenUser = body['token'];
-    console.log(tokenUser);
     try {
         const usuariodb = await token.borrar(tokenUser);
         res.json(usuariodb);

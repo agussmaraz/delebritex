@@ -8,17 +8,18 @@ export const nuevoMovimiento = async (req, res) => {
 
     for (let index = 0; index < productos.length; index++) {
         const element = productos[index];
-        console.log(element);
         const buffer = {};
         buffer.numeroCompra = element.numeroCompra;
         buffer.usuario = element.usuario.nombre;
         buffer.accion = 'Vendido';
+        buffer.precioBulto = element.precioBulto;
+        buffer.empaques = element.empaques;
         buffer.productos = element.producto;
         buffer.precioUnidad = element.precioUnidad;
         buffer.precioTotal = element.precioTotal;
-        buffer.valor = element.unidades;
-        buffer.fecha = new Date();
-
+        buffer.unidades = element.unidades;
+        buffer.fecha = element.createdAt;
+        
         const movimientodb = await Movimiento.create(buffer);
         movimientos.push(movimientodb)
     }

@@ -3,13 +3,16 @@ import { Carrito, Usuario } from '../sequelize';
 export const crear = async (req, res) => {
     // console.log(req.body);
     const numero = Math.round(Math.random() * 1000);
-    console.log(req.body)
     const body = req.body.map((producto) => {
+        console.log(producto);
         const producto_nuevo = {
             producto: producto.nombre,
             unidades: producto.totalUnidad,
             precioUnidad: producto.precioUnidad,
-            precioTotal: producto.precioUnidad * producto.totalUnidad,
+            precioTotal: producto.precioTotal,
+            unidadPorEmpaque: producto.unidadPorEmpaque,
+            empaques: producto.empaques,
+            precioBulto: producto.precioBulto,
             numeroCompra: numero,
             usuarioId: producto.usuarioId,
             imagen: producto.imagen,
@@ -64,14 +67,11 @@ export const numeroCompra = async (req, res) => {
 
 export const editar = async (req, res) => {
     const body = req.body;
-    console.log(body);
     const numeroCompra = req.params.numero;
-    console.log(numeroCompra);
     try {
         const carritodb = await Carrito.findAll({ where: { numeroCompra: numeroCompra } });
         carritodb.forEach((element) => {
             element.update(body);
-            console.log(element);
         });
         return res.json(carritodb);
     } catch (error) {

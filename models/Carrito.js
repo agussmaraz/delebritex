@@ -14,6 +14,9 @@ module.exports = (sequelize, type) => {
             unidades: {
                 type: type.INTEGER,
             },
+            unidadPorEmpaque: {
+                type: type.INTEGER
+            },
             empaques: {
                 type: type.INTEGER,
             },
@@ -22,6 +25,9 @@ module.exports = (sequelize, type) => {
             },
             precioUnidad: {
                 type: type.INTEGER,
+            },
+            precioBulto: {
+                type: type.INTEGER
             },
             precioTotal: {
                 type: type.INTEGER,
