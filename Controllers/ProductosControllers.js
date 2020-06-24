@@ -1,12 +1,10 @@
-import { Producto, Categoria, Empaque, Medida, Movimiento} from '../sequelize';
+import { Producto, Categoria, Empaque, Medida, Movimiento } from '../sequelize';
 import * as producto from '../services/producto.services';
 import * as movimiento from '../services/movimiento.service';
 const Slug = require('slug');
 
-
-export const crear =  async (req, res) => {
+export const crear = async (req, res) => {
     const body = req.body;
-    console.log(body);
     const pathOriginal = req.file.originalname;
     req.body.imagen = '/img/' + pathOriginal;
     const slug = Slug(req.body.slug);
@@ -84,33 +82,58 @@ export const editar = async (req, res) => {
     const nuevosDatos = req.body;
     const id = req.params.id;
     try {
-        const producto = await Producto.findOne({where: {id:id}})
-        const unidadAntes = producto.totalUnidad;
+        const productodb = await Producto.findOne({ where: { id: id } });
+        productodb.update(nuevosDatos);
 
-        const productodb = await Producto.findOne({where: {id:id}})
-        productodb.update(nuevosDatos)
-
-        const unidadAhora = productodb.totalUnidad;
-
-        if(unidadAntes !== unidadAhora){
-            const diferencia = unidadAhora - unidadAntes;
-            if(diferencia === 1){
-                 movimiento.crear(productodb.id, 'suma', diferencia, productodb.updatedAt);
-            } else {
-                 movimiento.crear(productodb.id, 'vendido', Math.abs(diferencia), productodb.updatedAt);
-            }
-        }
         res.json(productodb);
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const editarStock = async (req, res) => {
+    try {
+        const body = req.body;
+        console.log(body);
+        for (let index = 0; index < body.length; index++) {
+            const element = body[index];
+            const productodb = await Producto.findOne({ where: { id: element.id } });
+            const cantidades = Number(element.unidadPorEmpaque) * Number(element.empaques);
+            const unidades = Number(element.totalUnidad);
+            const unidad = Number(element.unidades);
+            const buffer = {};
 
-    }catch(error){
-        console.log(error)
+            if (element.empaques > 0) {
+                buffer.totalUnidad = productodb.totalUnidad - Number(cantidades);
+            } 
+            
+            if (element.totalUnidad > 0) {
+                buffer.totalUnidad = productodb.totalUnidad - Number(unidades);
+            } 
+            // else if (element.empaques > 0 && element.totalUnidad > 0) {
+            //     buffer.totalUnidad = productodb.totalUnidad - Number(cantidades);
+            //     buffer.totalUnidad = productodb.totalUnidad - Number(unidades);
+            // } 
+            if (element.unidades > 0) {
+                buffer.totalUnidad = productodb.totalUnidad - Number(unidad);
+            } 
+            // else if (element.empaques > 0 && element.unidades > 0) {
+            //     buffer.totalUnidad = productodb.totalUnidad - Number(cantidades);
+            //     buffer.totalUnidad = productodb.totalUnidad - Number(unidad);
+            // }
+
+            productodb.update(buffer);
+            res.json(productodb);
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).mensaje({ mensaje: 'Hubo un problema' });
     }
 };
 
 export const eliminar = async (req, res) => {
     const id = req.params.id;
     try {
-        const productodb = await Producto.destroy({ where: { id: id}} );
+        const productodb = await Producto.destroy({ where: { id: id } });
         movimiento.eliminar(id);
         if (!productodb) {
             res.status(500).json({
@@ -133,4 +156,5 @@ export default {
     buscarSegunId,
     editar,
     eliminar,
+    editarStock,
 };

@@ -2,9 +2,9 @@ import { Carrito, Usuario } from '../sequelize';
 
 export const crear = async (req, res) => {
     // console.log(req.body);
-    const numero = Math.round(Math.random() * 1000);
+    const numero = Math.round(Math.random() * 100000);
+    console.log(req.body);
     const body = req.body.map((producto) => {
-        console.log(producto);
         const producto_nuevo = {
             producto: producto.nombre,
             unidades: producto.totalUnidad,
@@ -16,6 +16,7 @@ export const crear = async (req, res) => {
             numeroCompra: numero,
             usuarioId: producto.usuarioId,
             imagen: producto.imagen,
+            estado: producto.estado,
         };
         return producto_nuevo;
     });
@@ -46,7 +47,7 @@ export const buscarSegunId = async (req, res) => {
 
 export const buscar = async (req, res) => {
     try {
-        const carritodb = await Carrito.findAll({ include: [{ model: Usuario, as: 'usuario' }] });
+        const carritodb = await Carrito.findAll({ include: [{ model: Usuario, as: 'usuario', attributes: { exclude: ['contraseña', 'token'] } }] });
         return res.status(200).json(carritodb);
     } catch (error) {
         console.log(error);
@@ -57,7 +58,7 @@ export const buscar = async (req, res) => {
 export const numeroCompra = async (req, res) => {
     const numero = req.params.numeroCompra;
     try {
-        const carritodb = await Carrito.findAll({ where: { numeroCompra: numero }, include: [{ model: Usuario, as: 'usuario' }] });
+        const carritodb = await Carrito.findAll({ where: { numeroCompra: numero }, include: [{ model: Usuario, as: 'usuario', attributes: { exclude: ['contraseña'] } }] });
         return res.status(200).json(carritodb);
     } catch (error) {
         console.log(error);

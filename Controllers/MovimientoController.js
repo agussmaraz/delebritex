@@ -3,27 +3,30 @@ import { buscar } from '../services/movimiento.service';
 // import { crear } from '../services/movimiento.service';
 
 export const nuevoMovimiento = async (req, res) => {
-    const productos = req.body.productos;
-    const movimientos = [];
-
-    for (let index = 0; index < productos.length; index++) {
-        const element = productos[index];
-        const buffer = {};
-        buffer.numeroCompra = element.numeroCompra;
-        buffer.usuario = element.usuario.nombre;
-        buffer.accion = 'Vendido';
-        buffer.precioBulto = element.precioBulto;
-        buffer.empaques = element.empaques;
-        buffer.productos = element.producto;
-        buffer.precioUnidad = element.precioUnidad;
-        buffer.precioTotal = element.precioTotal;
-        buffer.unidades = element.unidades;
-        buffer.fecha = element.createdAt;
-        
-        const movimientodb = await Movimiento.create(buffer);
-        movimientos.push(movimientodb)
-    }
     try {
+        console.log(req.body);
+        const productos = req.body.productos;
+        const movimientos = [];
+
+        for (let index = 0; index < productos.length; index++) {
+            const element = productos[index];
+
+            const buffer = {
+                numeroCompra: element.numeroCompra,
+                usuario: element.usuario.nombre,
+                accion: 'Vendido',
+                precioBulto: element.precioBulto,
+                empaques: element.empaques,
+                productos: element.producto,
+                precioUnidad: element.precioUnidad,
+                precioTotal: element.precioTotal,
+                unidades: element.unidades,
+                fecha: element.createdAt,
+            };
+
+            const movimientodb = await Movimiento.create(buffer);
+            movimientos.push(movimientodb);
+        }
         return res.json(movimientos);
     } catch (error) {
         console.log(error);
