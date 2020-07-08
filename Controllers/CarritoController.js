@@ -1,9 +1,12 @@
 import { Carrito, Usuario } from '../sequelize';
+import { confirmarCantidades } from '../services/carrito.service';
 
 export const crear = async (req, res) => {
-    // console.log(req.body);
+    const cantidades = await confirmarCantidades(req.body);
+    if (cantidades.length >= 1) {
+        return res.status(400).json({mensaje: cantidades});
+    }
     const numero = Math.round(Math.random() * 100000);
-    console.log(req.body);
     const body = req.body.map((producto) => {
         const producto_nuevo = {
             producto: producto.nombre,

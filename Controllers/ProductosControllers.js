@@ -93,7 +93,7 @@ export const editar = async (req, res) => {
 export const editarStock = async (req, res) => {
     try {
         const body = req.body;
-        console.log(body);
+        // console.log(body);
         for (let index = 0; index < body.length; index++) {
             const element = body[index];
             const productodb = await Producto.findOne({ where: { id: element.id } });

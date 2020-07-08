@@ -4,7 +4,6 @@ import { buscar } from '../services/movimiento.service';
 
 export const nuevoMovimiento = async (req, res) => {
     try {
-        console.log(req.body);
         const productos = req.body.productos;
         const movimientos = [];
 
