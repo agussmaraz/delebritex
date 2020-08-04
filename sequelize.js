@@ -7,7 +7,7 @@ const MovimientoModel = require('./models/Movimientos');
 const UsuarioModel = require('./models/Usuario');
 const CarritoModel = require('./models/Carrito');
 
-const DBURL = 'mysql://root:root@localhost:8889/delebritex'
+const DBURL = 'mysql://root:delebritex1678@localhost:3306/delebritex'
 const sequelize = new Sequelize(DBURL)
 const Producto = ProductoModel(sequelize, Sequelize);
 const Medida = MedidaModel(sequelize, Sequelize);
