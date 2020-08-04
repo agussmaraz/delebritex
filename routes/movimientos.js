@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-import MovimientosController from '../Controllers/MovimientoController';
+import MovimientosController from '../controllers/MovimientoController';
 
 router.post('/movimiento', MovimientosController.nuevoMovimiento);
 router.get('/movimientos', MovimientosController.buscarMovimientos);

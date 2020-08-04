@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-import CategoriaController from '../Controllers/CategoriaController';
+import CategoriaController from '../controllers/CategoriaController';
 
 router.post('/categoria', CategoriaController.crear);
 router.get('/categoriaBuscar', CategoriaController.buscar);

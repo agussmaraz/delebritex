@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-import UsuarioController from '../Controllers/UsuarioController';
+import UsuarioController from '../controllers/UsuarioController';
 
 
 router.post('/register', UsuarioController.crear);

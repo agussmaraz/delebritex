@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-import CarritoController from '../Controllers/CarritoController';
+import CarritoController from '../controllers/CarritoController';
 
 
 router.post('/nuevo-carrito', CarritoController.crear);
