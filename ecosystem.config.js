@@ -5,7 +5,7 @@ module.exports = {
             script: "./app.js",
             cwd: "./",
             watch: true,
-            args: "babel-node ./server.js",
+            interpreter: "./node_modules/babel-cli/bin/babel-node.js",
             ignore_watch: ["logs", "node_modules", "tmp"],
         },
     ],
