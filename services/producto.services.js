@@ -1,9 +1,7 @@
-import * as movimientos from './movimiento.service';
-import {Producto} from '../sequelize';
+import { Producto } from "../sequelize";
 
-export const crear = async(data) => {
+export const crear = async (data) => {
     let nuevo_producto = await Producto.create(data);
 
-    // await movimientos.crear(nuevo_producto.id, 'creado', nuevo_producto.totalUnidad, nuevo_producto.createdAt);
     return nuevo_producto;
-}
+};
